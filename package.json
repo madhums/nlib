@@ -1,0 +1,32 @@
+{
+  "name": "ni",
+  "version": "0.0.0",
+  "description": "A command to init node modules",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/madhums/ni.git"
+  },
+  "keywords": [
+    "commandline",
+    "init",
+    "node",
+    "modules"
+  ],
+  "bin": {
+    "ni": "./bin/ni"
+  },
+  "author": "Madhusudhan M S",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/madhums/ni/issues"
+  },
+  "homepage": "https://github.com/madhums/ni",
+  "dependencies": {
+    "commander": "^2.3.0",
+    "mkdirp": "^0.5.0"
+  }
+}
