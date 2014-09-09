@@ -25,7 +25,9 @@ program
   .version(pkg.version)
   .option('-d, --desc <desc>', 'A command to init node modules')
   .option('-e, --exec', 'Does it contain a executable')
-  .option('-b, --bower', 'Should it contain bower.json?');
+  .option('-b, --bower', 'Should it contain bower.json?')
+  .option('-a, --author', 'Name of the module author')
+  .option('-E, --email', 'Email the module author');
 
 program
   .command('setup <repo>')
@@ -102,5 +104,25 @@ function *writeFile (name) {
   }
 
   console.log('\t' + text +': ' + name);
-  fs.writeFileSync(dir, contents[name]);
+  fs.writeFileSync(dir, replaceInfo(contents[name]));
+}
+
+/**
+ * replaceInfo
+ *
+ * Replace the following with actual info
+ *
+ * {{ NAME }}
+ * {{ REPO }}
+ * {{ DESCRIPTION }}
+ * {{ AUTHOR }}
+ * {{ EMAIL }}
+ *
+ * @param {String} content
+ * @return {String}
+ * @api private
+ */
+
+function replaceInfo (content) {
+  return content;
 }
