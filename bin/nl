@@ -18,21 +18,27 @@ var prompt = require('co-prompt');
 
 var pkg = require('../package.json');
 var contents = require('../lib/');
+var eol = require('os').EOL;
+var infoFilePath = process.env.HOME + '/.nlinfo.json';
+var _repo = '';
 
 var confirm = prompt.confirm;
 
 program
   .version(pkg.version)
   .option('-d, --desc <desc>', 'A command to init node modules')
-  .option('-e, --exec', 'Does it contain a executable')
-  .option('-b, --bower', 'Should it contain bower.json?')
-  .option('-a, --author', 'Name of the module author')
-  .option('-E, --email', 'Email the module author');
+  .option('-A, --author <author>', 'Name of the module author')
+  .option('-E, --email <email>', 'Email the module author');
 
 program
   .command('setup <repo>')
   .description('Setup node module with repo (username/repo)')
   .action(setup);
+
+program
+  .command('info [options]')
+  .description('Stores the author name and email in ~/.nlinfo.json')
+  .action(storeInfo);
 
 program
   .parse(process.argv);
@@ -58,6 +64,7 @@ function setup (repo, desc) {
     'lib/index.js',
     'test/index.js'
   ];
+  _repo = repo;
 
   mkdirp(dir, function (err) {
     process.chdir(dir);
@@ -69,7 +76,7 @@ function setup (repo, desc) {
       for(var i = 0; i < files.length; i++) {
         var gen = yield writeFile(files[i]);
       }
-      console.log('');
+      console.log('\n');
       process.stdin.pause();
     })();
   });
@@ -124,5 +131,30 @@ function *writeFile (name) {
  */
 
 function replaceInfo (content) {
-  return content;
+  var info = fs.readFileSync(infoFilePath, 'utf-8');
+  info = JSON.parse(info);
+  return content
+    .replace(/{{ NAME }}/g, _repo.split('/')[1])
+    .replace(/{{ REPO }}/g, _repo)
+    .replace(/{{ DESCRIPTION }}/g, program.desc)
+    .replace(/{{ AUTHOR }}/g, info.author)
+    .replace(/{{ EMAIL }}/g, info.email);
+}
+
+/**
+ * storeInfo
+ */
+
+function storeInfo () {
+  if (program.author && program.email) {
+    var info = {
+      author: program.author,
+      email: program.email
+    };
+    var content = JSON.stringify(info) + eol;
+    fs.writeFile(infoFilePath, content, function (err) {
+      if (err) throw err;
+      console.log('Saved author info to: ' + infoFilePath);
+    })
+  }
 }
