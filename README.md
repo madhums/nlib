@@ -26,7 +26,7 @@ $ nl info -A 'YOUR_NAME' -E 'YOUR_EMAIL'
 ```
 
 This will write a file to your home directory `~/.nlinfo.json` containing
-the above information your provided.
+the above information you provided.
 
 ```sh
 $ nl setup madhums/node-imager -d 'Image processing and uploading'
