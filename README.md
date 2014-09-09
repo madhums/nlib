@@ -2,10 +2,21 @@
 
 Inits a node library.
 
+## Requirements
+
+* node 0.11.x with `--harmony` flag
+* create `nodeh` as an alias to `node --harmony`
+
+```sh
+$ cat ~/bin/nodeh
+#!/bin/bash
+node --harmony "$@"
+```
+
 ## Installation
 
 ```sh
-$ npm install nl
+$ npm install nl -g
 ```
 
 ## Usage
