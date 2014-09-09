@@ -24,7 +24,7 @@
   "maxdepth": 3,
   "maxstatements": 20,
   "maxlen": 100,
-  "curly": true,
+  "curly": false,
   "node": true,
   "es5": true,
   "browser": true,

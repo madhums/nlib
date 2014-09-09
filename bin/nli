@@ -99,8 +99,7 @@ function *writeFile (name) {
     dir = dir + '/' + name.split('/')[1];
   }
 
-  var exists = fs.existsSync(dir);
-  if (exists) {
+  if (fs.existsSync(dir)) {
     var ok = yield confirm('\n\t' + name + ' already exists. Do you want to overwrite?\n\t');
     if (!ok) {
       process.stdin.destroy();
@@ -146,15 +145,33 @@ function replaceInfo (content) {
  */
 
 function storeInfo () {
-  if (program.author && program.email) {
-    var info = {
-      author: program.author,
-      email: program.email
-    };
-    var content = JSON.stringify(info) + eol;
-    fs.writeFile(infoFilePath, content, function (err) {
-      if (err) throw err;
-      console.log('Saved author info to: ' + infoFilePath);
-    })
+  if (!(program.author && program.email)) {
+    var info = getInfo();
+    if (!info) {
+      console.log('No author information has been stored in ' + infoFilePath);
+    } else {
+      console.log(info);
+    }
+    return;
   }
+
+  var info = {
+    author: program.author,
+    email: program.email
+  };
+  var content = JSON.stringify(info) + eol;
+  fs.writeFile(infoFilePath, content, function (err) {
+    if (err) throw err;
+    console.log('Saved author info to: ' + infoFilePath);
+  });
+}
+
+/**
+ * getInfo
+ */
+
+function getInfo () {
+  if (!fs.existsSync(infoFilePath)) return;
+  var info = fs.readFileSync(infoFilePath, 'utf-8');
+  return JSON.parse(info);
 }
