@@ -1,6 +1,6 @@
-## nl
+## nli
 
-Inits a node library.
+A command setup node module/library
 
 ## Requirements
 
@@ -16,20 +16,20 @@ node --harmony "$@"
 ## Installation
 
 ```sh
-$ npm install nl -g
+$ npm install nli -g
 ```
 
 ## Usage
 
 ```sh
-$ nl info -A 'YOUR_NAME' -E 'YOUR_EMAIL'
+$ nli info -A 'YOUR_NAME' -E 'YOUR_EMAIL'
 ```
 
 This will write a file to your home directory `~/.nlinfo.json` containing
 the above information you provided.
 
 ```sh
-$ nl setup madhums/node-imager -d 'Image processing and uploading'
+$ nli setup madhums/node-imager -d 'Image processing and uploading'
 ```
 
 This will create `madhums/node-imager` dir and sets up node module within it.
@@ -37,7 +37,7 @@ This will create `madhums/node-imager` dir and sets up node module within it.
 For help
 
 ```sh
-$ nl -h
+$ nli -h
 ```
 
 ## License

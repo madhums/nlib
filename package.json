@@ -1,14 +1,14 @@
 {
-  "name": "nl",
+  "name": "nli",
   "version": "0.0.2",
-  "description": "A command to init node modules",
+  "description": "A command setup node module/library",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/madhums/nl.git"
+    "url": "git://github.com/madhums/nli.git"
   },
   "keywords": [
     "commandline",
@@ -17,14 +17,14 @@
     "modules"
   ],
   "bin": {
-    "nl": "./bin/nl"
+    "nli": "./bin/nli"
   },
   "author": "Madhusudhan M S",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/madhums/nl/issues"
+    "url": "https://github.com/madhums/nli/issues"
   },
-  "homepage": "https://github.com/madhums/nl",
+  "homepage": "https://github.com/madhums/nli",
   "dependencies": {
     "co": "^3.1.0",
     "commander": "^2.3.0",
