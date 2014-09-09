@@ -1,17 +1,17 @@
-## ni (node init)
+## nl
 
-Inits a node module
+Inits a node library.
 
 ## Installation
 
 ```sh
-$ npm install ni
+$ npm install nl
 ```
 
 ## Usage
 
 ```sh
-$ ni setup madhums/node-imager -d 'Image processing and uploading'
+$ nl setup madhums/node-imager -d 'Image processing and uploading'
 ```
 
 This will create `madhums/node-imager` dir and sets up node module within it.

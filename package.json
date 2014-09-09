@@ -1,5 +1,5 @@
 {
-  "name": "ni",
+  "name": "nl",
   "version": "0.0.0",
   "description": "A command to init node modules",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/madhums/ni.git"
+    "url": "git://github.com/madhums/nl.git"
   },
   "keywords": [
     "commandline",
@@ -17,14 +17,14 @@
     "modules"
   ],
   "bin": {
-    "ni": "./bin/ni"
+    "nl": "./bin/nl"
   },
   "author": "Madhusudhan M S",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/madhums/ni/issues"
+    "url": "https://github.com/madhums/nl/issues"
   },
-  "homepage": "https://github.com/madhums/ni",
+  "homepage": "https://github.com/madhums/nl",
   "dependencies": {
     "co": "^3.1.0",
     "commander": "^2.3.0",
