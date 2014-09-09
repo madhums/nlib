@@ -1,6 +1,6 @@
 ## nli
 
-A command setup node module/library
+A command to setup a node module/library
 
 ## Requirements
 
