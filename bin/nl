@@ -58,10 +58,6 @@ function setup (repo, desc) {
   ];
 
   mkdirp(dir, function (err) {
-    if (err) {
-      console.error(err);
-    }
-
     process.chdir(dir);
 
     console.log('');
@@ -69,7 +65,7 @@ function setup (repo, desc) {
 
     co(function *() {
       for(var i = 0; i < files.length; i++) {
-        yield writeFile(files[i]);
+        var gen = yield writeFile(files[i]);
       }
       console.log('');
       process.stdin.pause();
@@ -86,6 +82,7 @@ function setup (repo, desc) {
 
 function *writeFile (name) {
   var dir = process.cwd() + '/' + name.split('/')[0];
+  var text = 'creating';
 
   // If it is a file, simply write it
   if (~name.indexOf('/')) {
@@ -95,23 +92,15 @@ function *writeFile (name) {
 
   var exists = fs.existsSync(dir);
   if (exists) {
-    var ok = yield confirm('\n\t' + name + ' already exists. Do you want to overwrite?\n');
+    var ok = yield confirm('\n\t' + name + ' already exists. Do you want to overwrite?\n\t');
     if (!ok) {
       process.stdin.destroy();
+    } else {
+      text = 'overwriting';
+      process.stdin.resume();
     }
   }
-  writeContent(name, dir);
-}
 
-/**
- * writeContent
- *
- * @param {String} name
- * @param {String} path
- * @api private
- */
-
-function writeContent (name, path) {
-  console.log('\tcreating: ' + name);
-  fs.writeFileSync(path, contents[name]);
+  console.log('\t' + text +': ' + name);
+  fs.writeFileSync(dir, contents[name]);
 }
