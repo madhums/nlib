@@ -27,6 +27,12 @@ $ nl setup madhums/node-imager -d 'Image processing and uploading'
 
 This will create `madhums/node-imager` dir and sets up node module within it.
 
+For help
+
+```sh
+$ nl -h
+```
+
 ## License
 
 The MIT License (MIT)
