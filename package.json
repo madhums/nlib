@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/madhums/ni",
   "dependencies": {
+    "co": "^3.1.0",
     "commander": "^2.3.0",
     "mkdirp": "^0.5.0"
   }

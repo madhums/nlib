@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env nodeh
 
 /*!
  * ni
@@ -13,19 +13,24 @@
 var fs = require('fs');
 var program = require('commander');
 var mkdirp = require('mkdirp');
+var co = require('co');
+var prompt = require('co-prompt');
+
 var pkg = require('../package.json');
 var contents = require('../lib/');
+
+var confirm = prompt.confirm;
 
 program
   .version(pkg.version)
   .option('-d, --desc <desc>', 'A command to init node modules')
   .option('-e, --exec', 'Does it contain a executable')
-  .option('-b, --bower', 'Should it contain bower.json?')
+  .option('-b, --bower', 'Should it contain bower.json?');
 
 program
   .command('setup <repo>')
   .description('Setup node module with repo (username/repo)')
-  .action(setup)
+  .action(setup);
 
 program
   .parse(process.argv);
@@ -39,7 +44,7 @@ program
  */
 
 function setup (repo, desc) {
-  var dir = __dirname + '/' + repo;
+  var dir = process.cwd() + '/' + repo;
 
   mkdirp(dir, function (err) {
     if (err) {
@@ -48,11 +53,19 @@ function setup (repo, desc) {
 
     process.chdir(dir);
 
+    console.log('');
+    console.log('\t' + repo);
+    console.log('');
     writeFile('.gitignore');
+    writeFile('.jshintrc');
+    writeFile('.jshintignore');
     writeFile('package.json');
     writeFile('README.md');
     writeFile('CHANGELOG.md');
+    writeFile('index.js');
     writeFile('lib/index.js');
+    writeFile('test/index.js');
+    console.log('');
   });
 }
 
@@ -64,21 +77,17 @@ function setup (repo, desc) {
  */
 
 function writeFile (name) {
-  var dir = __dirname + '/' + name.split('/')[0];
+  var dir = process.cwd() + '/' + name.split('/')[0];
+  var gen;
 
   // If it is a file, simply write it
   if (!~name.indexOf('/')) {
-    return writeContent(name, dir);
+     gen = writeContent(name, dir);
+  } else {
+    mkdirp.sync(dir);
+    gen = writeContent(name, dir + '/' + name.split('/')[1]);
   }
-
-  mkdirp(dir, function (err) {
-    if (err) {
-      console.error(err);
-      return;
-    }
-
-    writeContent(name, dir + '/' + name[1]);
-  });
+  console.log(gen.next());
 }
 
 /**
@@ -89,7 +98,19 @@ function writeFile (name) {
  * @api private
  */
 
-function writeContent (name, path) {
-  console.log(path);
-  // fs.writeFile(path, contents[name]);
+function *writeContent (name, path) {
+  var exists = fs.existsSync(path);
+
+  if (exists) {
+    var ok = yield confirm(name + ' already exists. Do you want to overwrite?\n');
+    if (!ok) {
+      process.stdin.destroy();
+    } else {
+      fs.writeFileSync(path, contents[name]);
+      console.log('\tcreating: ' + name);
+    }
+  } else {
+    yield fs.writeFileSync(path, contents[name]);
+    console.log('\tcreating: ' + name);
+  }
 }
