@@ -33,12 +33,12 @@ program
 program
   .command('setup <repo>')
   .description('Setup node module with repo (username/repo)')
-  .action(setup);
+  .action(co(setup));
 
 program
   .command('info [options]')
   .description('Stores the author name and email in ~/.nlinfo.json')
-  .action(storeInfo);
+  .action(co(storeInfo));
 
 program
   .parse(process.argv);
@@ -51,7 +51,7 @@ program
  * @api private
  */
 
-function setup (repo, desc) {
+function *setup (repo, desc) {
   var dir = process.cwd() + '/' + repo;
   var files = [
     '.gitignore',
@@ -66,20 +66,17 @@ function setup (repo, desc) {
   ];
   _repo = repo;
 
-  mkdirp(dir, function (err) {
-    process.chdir(dir);
+  yield mkdir(dir);
+  process.chdir(dir);
+  console.log('');
+  console.log('\t' + repo);
 
-    console.log('');
-    console.log('\t' + repo);
+  for (var i = 0; i < files.length; i++) {
+    yield writeFile(files[i]);
+  }
 
-    co(function *() {
-      for(var i = 0; i < files.length; i++) {
-        var gen = yield writeFile(files[i]);
-      }
-      console.log('\n');
-      process.stdin.pause();
-    })();
-  });
+  console.log('\n');
+  process.stdin.pause();
 }
 
 /**
@@ -95,22 +92,18 @@ function *writeFile (name) {
 
   // If it is a file, simply write it
   if (~name.indexOf('/')) {
-    mkdirp.sync(dir);
+    yield mkdir(dir);
     dir = dir + '/' + name.split('/')[1];
   }
 
-  if (fs.existsSync(dir)) {
+  if (yield exists(dir)) {
     var ok = yield confirm('\n\t' + name + ' already exists. Do you want to overwrite?\n\t');
-    if (!ok) {
-      process.stdin.destroy();
-    } else {
-      text = 'overwriting';
-      process.stdin.resume();
-    }
+    if (!ok) return;
+    text = 'overwriting';
   }
 
   console.log('\t' + text +': ' + name);
-  fs.writeFileSync(dir, replaceInfo(contents[name]));
+  yield write(dir, yield replaceInfo(contents[name]));
 }
 
 /**
@@ -129,8 +122,8 @@ function *writeFile (name) {
  * @api private
  */
 
-function replaceInfo (content) {
-  var info = fs.readFileSync(infoFilePath, 'utf-8');
+function *replaceInfo (content) {
+  var info = yield read(infoFilePath);
   info = JSON.parse(info);
   return content
     .replace(/{{ NAME }}/g, _repo.split('/')[1])
@@ -144,14 +137,10 @@ function replaceInfo (content) {
  * storeInfo
  */
 
-function storeInfo () {
+function *storeInfo () {
   if (!(program.author && program.email)) {
-    var info = getInfo();
-    if (!info) {
-      console.log('No author information has been stored in ' + infoFilePath);
-    } else {
-      console.log(info);
-    }
+    var info = yield read(infoFilePath);
+    if (info) console.log(info);
     return;
   }
 
@@ -160,18 +149,52 @@ function storeInfo () {
     email: program.email
   };
   var content = JSON.stringify(info) + eol;
-  fs.writeFile(infoFilePath, content, function (err) {
-    if (err) throw err;
-    console.log('Saved author info to: ' + infoFilePath);
-  });
+  yield write(infoFilePath, content);
+  console.log('Saved author info to: ' + infoFilePath);
 }
 
 /**
- * getInfo
+ * exists
  */
 
-function getInfo () {
-  if (!fs.existsSync(infoFilePath)) return;
-  var info = fs.readFileSync(infoFilePath, 'utf-8');
-  return JSON.parse(info);
+function exists (path) {
+  return function (next) {
+    fs.stat(path, function (err) {
+      return next(null, !err);
+    });
+  };
+}
+
+/**
+ * read
+ */
+
+function read (path) {
+  return function (next) {
+    try {
+      fs.readFile(path, 'utf-8', next);
+    } catch (err) {
+      next();
+    }
+  };
+}
+
+/**
+ * mkdir
+ */
+
+function mkdir (path) {
+  return function (next) {
+    mkdirp(path, next);
+  };
+}
+
+/**
+ * write
+ */
+
+function write (path, data) {
+  return function (next) {
+    fs.writeFile(path, data, next);
+  };
 }
