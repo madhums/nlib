@@ -26,9 +26,6 @@
   "maxlen": 100,
   "curly": false,
   "node": true,
-  "es5": true,
-  "browser": true,
-  "globals": {
-    "angular": true
-  }
+  "esnext": true,
+  "globals": {}
 }
