@@ -54,6 +54,7 @@ program
 function *setup (repo, desc) {
   var dir = process.cwd() + '/' + repo;
   var files = [
+    '.travis.yml',
     '.gitignore',
     '.jshintrc',
     '.jshintignore',
