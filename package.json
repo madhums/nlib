@@ -3,7 +3,7 @@
   "version": "0.1.2",
   "description": "A command to setup a node module/library",
   "main": "index.js",
-  "engine": {
+  "engines": {
     "node": ">=0.11.12"
   },
   "scripts": {
