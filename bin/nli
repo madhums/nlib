@@ -28,7 +28,7 @@ program
   .version(pkg.version)
   .option('-d, --desc <desc>', 'A command to init node modules')
   .option('-A, --author <author>', 'Name of the module author')
-  .option('-E, --email <email>', 'Email the module author');
+  .option('-E, --email <email>', 'Email of the module author');
 
 program
   .command('setup <repo>')
