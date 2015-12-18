@@ -1,43 +1,29 @@
-## nli
+## nlib
 
-A command to setup a node module/library
-
-## Requirements
-
-* node 0.11.x with `--harmony` flag
-* create `nodeh` as an alias to `node --harmony`
-
-```sh
-$ cat ~/bin/nodeh
-#!/bin/bash
-node --harmony "$@"
-```
+CLI helper to set up new node library
 
 ## Installation
 
 ```sh
-$ npm install nli -g
+$ npm install nlib -g
 ```
 
 ## Usage
 
 ```sh
-$ nli info -A 'YOUR_NAME' -E 'YOUR_EMAIL'
+$ echo '{"author":"<AUTHOR>","email":"<EMAIL>", "ghusername": "<GH_USERNAME>"}' > .nlibrc
+# If you are creating a lot of node modules, you can store the meta info in `~/.nlibrc` file
+
+$ nlib imager -d "Image processing and uploading"
+# This will create a folder `imager` in the current dir and adds
+# all boilerplate code in there.
 ```
 
-This will write a file to your home directory `~/.nlinfo.json` containing
-the above information you provided.
-
-```sh
-$ nli setup madhums/node-imager -d 'Image processing and uploading'
-```
-
-This will create `madhums/node-imager` dir and sets up node module within it.
 
 For help
 
 ```sh
-$ nli -h
+$ nlib -h
 ```
 
 ## License
