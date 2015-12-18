@@ -20,7 +20,7 @@
     "modules"
   ],
   "bin": {
-    "nli": "./bin/nlib.js"
+    "nlib": "./bin/nlib.js"
   },
   "author": "Madhusudhan M S",
   "license": "MIT",
