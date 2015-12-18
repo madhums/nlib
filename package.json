@@ -1,7 +1,7 @@
 {
   "name": "nlib",
   "version": "1.0.0",
-  "description": "A command to setup a node module/library",
+  "description": "CLI helper to set up new node library",
   "main": "index.js",
   "engines": {
     "node": ">=5.x"
