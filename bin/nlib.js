@@ -54,11 +54,12 @@ function *setup () {
   const dir = cwd + '/' + repo;
   const files = [
     '.travis.yml',
+    '.codeclimate.yml',
     '.gitignore',
     '.eslintrc',
     'package.json',
     'README.md',
-    'CHANGELOG.md',
+    'History.md',
     'index.js',
     'lib/index.js',
     'test/index.js'
